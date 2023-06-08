@@ -1,9 +1,9 @@
 from gremlin_python.structure.graph import Graph
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
 from matplotlib import pyplot as plt
+from numpy import random
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.ensemble import IsolationForest
-
 
 
 def generate_data(g):
@@ -26,6 +26,10 @@ def generate_data(g):
     g.addV('Person').property('name', 'Peter').property('age', 32).property('nb_client', 4).next()
     g.addV('Person').property('name', 'Quentin').property('age', 27).property('nb_client', 6).next()
     g.addV('Person').property('name', 'Rachel').property('age', 30).property('nb_client', 7).next()
+    # generate ppl randomly but with a concentration on age 30 and nb_client 7
+    for i in range(10):
+        g.addV('Person').property('name', 'Random' + str(i)).property('age', 30 + random.randint(-5, 5)).property(
+            'nb_client', 7 + random.randint(-2, 2)).next()
 
 
 # Connect to the graph database
@@ -63,7 +67,8 @@ if_probas = (if_scores - if_scores.min()) / (if_scores.max() - if_scores.min())
 
 # Print LOF scores, LOP, and Isolation Forest scores, IF-LOP next to each data point
 for i, v in enumerate(vertices):
-    print(f"{v['name'][0]}: LOF={lof_scores[i]:.2f}, LOP={lof_probas[i]:.2f}, IF={if_scores[i]:.2f}, IF-LOP={if_probas[i]:.2f}")
+    print(
+        f"{v['name'][0]}: LOF={lof_scores[i]:.2f}, LOP={lof_probas[i]:.2f}, IF={if_scores[i]:.2f}, IF-LOP={if_probas[i]:.2f}")
 
 # Plot
 plt.title("Outlier Detection")

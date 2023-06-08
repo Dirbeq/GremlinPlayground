@@ -25,7 +25,7 @@ def generate_data(g):
     g.addV('Person').property('name', 'Nancy').property('age', 32).property('nb_client', 8).next()
     g.addV('Person').property('name', 'Olivia').property('age', 30).property('nb_client', 5).next()
     g.addV('Person').property('name', 'Peter').property('age', 32).property('nb_client', 4).next()
-    g.addV('Person').property('name', 'Quentin').property('age', 27).property('nb_client', 6).next()
+    g.addV('Person').property('name', 'Quentin').property('age', -27).property('nb_client', 6).next()
     g.addV('Person').property('name', 'Rachel').property('age', 120).property('nb_client', 7).next()
     # generate ppl randomly but with a concentration on age 30 and nb_client 7
     for i in tqdm(range(10)):
@@ -54,13 +54,13 @@ X = [[v['nb_client'][0], v['age'][0]] for v in vertices]
 
 # Perform LOF analysis
 n_neighbors = min(10, len(vertices) - 1)  # Adjust the value based on your needs
-lof = LocalOutlierFactor(n_neighbors=n_neighbors, contamination=0.1)
+lof = LocalOutlierFactor(n_neighbors=n_neighbors, contamination=0.12)
 y_pred = lof.fit_predict(X)
 lof_scores = -lof.negative_outlier_factor_
 
 # Perform Isolation Forest analysis
 n_estimators = 100  # Adjust the value based on your needs
-isolation_forest = IsolationForest(n_estimators=n_estimators, contamination=0.1)
+isolation_forest = IsolationForest(n_estimators=n_estimators, contamination=0.12)
 isolation_forest.fit(X)
 if_scores = isolation_forest.decision_function(X)
 

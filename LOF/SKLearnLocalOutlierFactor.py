@@ -12,25 +12,25 @@ g = graph.traversal().withRemote(connection)
 g.V().drop().iterate()
 
 # Generate data
-g.addV('Person').property('name', 'Alice').property('age', 30).next()
-g.addV('Person').property('name', 'Bob').property('age', 27).next()
-g.addV('Person').property('name', 'Charlie').property('age', 32).next()
-g.addV('Person').property('name', 'Diana').property('age', 70).next()
-g.addV('Person').property('name', 'Eve').property('age', 20).next()
-g.addV('Person').property('name', 'Frank').property('age', 29).next()
-g.addV('Person').property('name', 'Grace').property('age', 34).next()
-g.addV('Person').property('name', 'Helen').property('age', 25).next()
-g.addV('Person').property('name', 'Ivan').property('age', 33).next()
-g.addV('Person').property('name', 'Julia').property('age', 28).next()
-g.addV('Person').property('name', 'Kevin').property('age', 31).next()
-g.addV('Person').property('name', 'Linda').property('age', 26).next()
-g.addV('Person').property('name', 'Michael').property('age', 35).next()
+g.addV('Person').property('name', 'Alice').property('age', 30).property('nb_client', 5).next()
+g.addV('Person').property('name', 'Bob').property('age', 27).property('nb_client', 6).next()
+g.addV('Person').property('name', 'Charlie').property('age', 32).property('nb_client', 7).next()
+g.addV('Person').property('name', 'Diana').property('age', 56).property('nb_client', 8).next()
+g.addV('Person').property('name', 'Eve').property('age', 20).property('nb_client', 4).next()
+g.addV('Person').property('name', 'Frank').property('age', 80).property('nb_client', 87).next()
+g.addV('Person').property('name', 'Grace').property('age', 2).property('nb_client', 54).next()
+g.addV('Person').property('name', 'Helen').property('age', 25).property('nb_client', 9).next()
+g.addV('Person').property('name', 'Ivan').property('age', 33).property('nb_client', 7).next()
+g.addV('Person').property('name', 'Julia').property('age', 28).property('nb_client', 3).next()
+g.addV('Person').property('name', 'Kevin').property('age', 31).property('nb_client', 5).next()
+g.addV('Person').property('name', 'Linda').property('age', 80).property('nb_client', 5).next()
+g.addV('Person').property('name', 'Michael').property('age', 35).property('nb_client', 7).next()
 
 # Retrieve all vertices from the graph database
 vertices = g.V().hasLabel('Person').valueMap(True).toList()
 
-# Extract features for LOF analysis (example: use 'age' property)
-X = [[v['age'][0]] for v in vertices]
+# Extract features for LOF analysis
+X = [[v['nb_client'][0], v['age'][0]] for v in vertices]
 
 # Perform LOF analysis
 n_neighbors = min(10, len(vertices) - 1)  # Adjust the value based on your needs
@@ -41,7 +41,6 @@ scores = -lof.negative_outlier_factor_
 # Print LOF scores next to each data point
 for i, v in enumerate(vertices):
     print(f"{v['name'][0]}: {scores[i]:.2f}")
-
 
 # Close the connection to the graph database
 connection.close()

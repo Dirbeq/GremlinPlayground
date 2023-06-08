@@ -1,9 +1,10 @@
-from gremlin_python.structure.graph import Graph
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
+from gremlin_python.structure.graph import Graph
 from matplotlib import pyplot as plt
 from numpy import random
-from sklearn.neighbors import LocalOutlierFactor
 from sklearn.ensemble import IsolationForest
+from sklearn.neighbors import LocalOutlierFactor
+from tqdm import tqdm
 
 
 def generate_data(g):
@@ -25,14 +26,14 @@ def generate_data(g):
     g.addV('Person').property('name', 'Olivia').property('age', 30).property('nb_client', 5).next()
     g.addV('Person').property('name', 'Peter').property('age', 32).property('nb_client', 4).next()
     g.addV('Person').property('name', 'Quentin').property('age', 27).property('nb_client', 6).next()
-    g.addV('Person').property('name', 'Rachel').property('age', 30).property('nb_client', 7).next()
+    g.addV('Person').property('name', 'Rachel').property('age', 120).property('nb_client', 7).next()
     # generate ppl randomly but with a concentration on age 30 and nb_client 7
-    for i in range(10):
-        g.addV('Person').property('name', 'Random' + str(i)).property('age', 30 + random.randint(-10, 10)).property(
+    for i in tqdm(range(10)):
+        g.addV('Person').property('name', 'Random1.' + str(i)).property('age', 30 + random.randint(-10, 10)).property(
             'nb_client', 7 + random.randint(-10, 10)).next()
 
-    for i in range(10):
-        g.addV('Person').property('name', 'Random' + str(i)).property('age', 140 + random.randint(-10, 10)).property(
+    for i in tqdm(range(10)):
+        g.addV('Person').property('name', 'Random2.' + str(i)).property('age', 140 + random.randint(-10, 10)).property(
             'nb_client', 50 + random.randint(-10, 10)).next()
 
 
@@ -82,12 +83,16 @@ plt.scatter([x[0] for i, x in enumerate(X) if y_pred[i] == -1], [x[1] for i, x i
 plt.scatter([x[0] for i, x in enumerate(X) if if_scores[i] < 0], [x[1] for i, x in enumerate(X) if if_scores[i] < 0],
             color="b", s=30.0, label="IF Outliers")
 for i, v in enumerate(vertices):
-    if y_pred[i] == -1:
-        plt.annotate(v['name'][0], (X[i][0], X[i][1]), color="r")
-    elif if_scores[i] < 0:
-        plt.annotate(v['name'][0], (X[i][0], X[i][1]), color="b")
+    if y_pred[i] == -1 and if_scores[i] < 0:
+        plt.annotate(v['name'][0], (X[i][0], X[i][1]), color="m")
     else:
-        plt.annotate(v['name'][0], (X[i][0], X[i][1]))
+        if y_pred[i] == -1:
+            plt.annotate(v['name'][0], (X[i][0], X[i][1]), color="r")
+        elif if_scores[i] < 0:
+            plt.annotate(v['name'][0], (X[i][0], X[i][1]), color="b")
+        else:
+            # plt.annotate(v['name'][0], (X[i][0], X[i][1]))
+            pass
 
 plt.xlabel("Number of clients")
 plt.ylabel("Age")

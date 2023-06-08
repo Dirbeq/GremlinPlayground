@@ -14,7 +14,7 @@ def generate_data(g):
     g.addV('Person').property('name', 'Diana').property('age', 39).property('nb_client', 8).next()
     g.addV('Person').property('name', 'Eve').property('age', 20).property('nb_client', 4).next()
     g.addV('Person').property('name', 'Frank').property('age', 80).property('nb_client', 30).next()
-    g.addV('Person').property('name', 'Grace').property('age', 2).property('nb_client', 40).next()
+    g.addV('Person').property('name', 'Grace').property('age', 2).property('nb_client', -20).next()
     g.addV('Person').property('name', 'Helen').property('age', 25).property('nb_client', 9).next()
     g.addV('Person').property('name', 'Ivan').property('age', 33).property('nb_client', 7).next()
     g.addV('Person').property('name', 'Julia').property('age', 28).property('nb_client', 3).next()
@@ -28,8 +28,12 @@ def generate_data(g):
     g.addV('Person').property('name', 'Rachel').property('age', 30).property('nb_client', 7).next()
     # generate ppl randomly but with a concentration on age 30 and nb_client 7
     for i in range(10):
-        g.addV('Person').property('name', 'Random' + str(i)).property('age', 30 + random.randint(-5, 5)).property(
-            'nb_client', 7 + random.randint(-2, 2)).next()
+        g.addV('Person').property('name', 'Random' + str(i)).property('age', 30 + random.randint(-10, 10)).property(
+            'nb_client', 7 + random.randint(-10, 10)).next()
+
+    for i in range(10):
+        g.addV('Person').property('name', 'Random' + str(i)).property('age', 140 + random.randint(-10, 10)).property(
+            'nb_client', 50 + random.randint(-10, 10)).next()
 
 
 # Connect to the graph database

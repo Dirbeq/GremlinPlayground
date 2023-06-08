@@ -20,19 +20,19 @@ def generate_data(g):
     g.addV('Person').property('name', 'Ivan').property('age', 33).property('nb_client', 7).next()
     g.addV('Person').property('name', 'Julia').property('age', 28).property('nb_client', 3).next()
     g.addV('Person').property('name', 'Kevin').property('age', 31).property('nb_client', 5).next()
-    g.addV('Person').property('name', 'Linda').property('age', 40).property('nb_client', 35).next()
+    g.addV('Person').property('name', 'Linda').property('age', 40).property('nb_client', 60).next()
     g.addV('Person').property('name', 'Michael').property('age', 35).property('nb_client', 7).next()
     g.addV('Person').property('name', 'Nancy').property('age', 32).property('nb_client', 8).next()
     g.addV('Person').property('name', 'Olivia').property('age', 30).property('nb_client', 5).next()
-    g.addV('Person').property('name', 'Peter').property('age', 32).property('nb_client', 4).next()
-    g.addV('Person').property('name', 'Quentin').property('age', -27).property('nb_client', 6).next()
+    g.addV('Person').property('name', 'Peter').property('age', -32).property('nb_client', 50).next()
+    g.addV('Person').property('name', 'Quentin').property('age', -30).property('nb_client', 6).next()
     g.addV('Person').property('name', 'Rachel').property('age', 120).property('nb_client', 7).next()
     # generate ppl randomly but with a concentration on age 30 and nb_client 7
-    for i in tqdm(range(10)):
+    for i in tqdm(range(15)):
         g.addV('Person').property('name', 'Random1.' + str(i)).property('age', 30 + random.randint(-10, 10)).property(
             'nb_client', 7 + random.randint(-10, 10)).next()
 
-    for i in tqdm(range(10)):
+    for i in tqdm(range(15)):
         g.addV('Person').property('name', 'Random2.' + str(i)).property('age', 140 + random.randint(-10, 10)).property(
             'nb_client', 50 + random.randint(-10, 10)).next()
 

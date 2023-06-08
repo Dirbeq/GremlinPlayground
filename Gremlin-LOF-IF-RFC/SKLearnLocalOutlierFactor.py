@@ -1,8 +1,10 @@
+import csv
+
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
 from gremlin_python.structure.graph import Graph
 from matplotlib import pyplot as plt
 from numpy import random
-from sklearn.ensemble import IsolationForest
+from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.neighbors import LocalOutlierFactor
 from tqdm import tqdm
 
@@ -18,7 +20,7 @@ def generate_data(g):
     g.addV('Person').property('name', 'Grace').property('age', 2).property('nb_client', -20).next()
     g.addV('Person').property('name', 'Helen').property('age', 25).property('nb_client', 9).next()
     g.addV('Person').property('name', 'Ivan').property('age', 33).property('nb_client', 7).next()
-    g.addV('Person').property('name', 'Julia').property('age', -28).property('nb_client', -3).next()
+    g.addV('Person').property('name', 'Julia').property('age', -28).property('nb_client', 8).next()
     g.addV('Person').property('name', 'Kevin').property('age', 31).property('nb_client', 5).next()
     g.addV('Person').property('name', 'Linda').property('age', 40).property('nb_client', 60).next()
     g.addV('Person').property('name', 'Michael').property('age', 35).property('nb_client', 7).next()
@@ -64,6 +66,35 @@ n_estimators = 100  # Adjust the value based on your needs
 isolation_forest = IsolationForest(n_estimators=n_estimators, contamination=contamination)
 isolation_forest.fit(X)
 if_scores = isolation_forest.decision_function(X)
+
+# Create the dataset with age, nb_client, and is_outlier
+dataset = []
+for i, v in enumerate(vertices):
+    age = v['age'][0]
+    nb_client = v['nb_client'][0]
+    is_outlier = 1 if (y_pred[i] == -1 and if_scores[i] < 0) else 0
+    dataset.append([age, nb_client, is_outlier])
+
+# Fit a Random Forest classifier
+random_forest = RandomForestClassifier(n_estimators=100)
+X_train = [[x[0], x[1]] for x in dataset]
+y_train = [x[2] for x in dataset]
+random_forest.fit(X_train, y_train)
+
+# Generate predictions for new data points
+new_data = [[32, 8], [28, 4], [40, 60], [30, 5], [31, 7], [30, 6], [120, -7], [140, 50]]
+predictions = random_forest.predict(new_data)
+
+# Print the predictions
+for i, data_point in enumerate(new_data):
+    print(f"Data point {i + 1}: Age={data_point[0]}, nb_client={data_point[1]}, is_outlier={predictions[i]}")
+
+# Save the csv file
+with open('data.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(['age', 'nb_client', 'is_outlier'])
+    for data_point in dataset:
+        writer.writerow(data_point)
 
 # Calculate Local Outlier Probability (LOP)
 lof_probas = (lof_scores - lof_scores.min()) / (lof_scores.max() - lof_scores.min())

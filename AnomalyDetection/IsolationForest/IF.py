@@ -6,10 +6,10 @@ from AnomalyDetection.utilsAD import generate_random_data
 
 def main():
     # Generate random data with outliers
-    n_samples = 1000
+    n_samples = 500
     n_features = 2
-    random_state = 42
-    x_train = generate_random_data(n_samples, n_features, random_state=random_state)
+    random_state = 40
+    x_train = generate_random_data(n_samples, n_features, random_state)
 
     # Fit the Isolation Forest model
     clf = IsolationForest(random_state=random_state)

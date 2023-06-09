@@ -22,3 +22,4 @@ wheel==0.38.4
 yarl==1.9.2
 matplotlib~=3.7.1
 tqdm~=4.65.0
+pyod~=1.0.9

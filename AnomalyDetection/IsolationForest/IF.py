@@ -9,17 +9,17 @@ def main():
     n_samples = 1000
     n_features = 2
     random_state = 42
-    X_train = generate_random_data(n_samples, n_features, random_state=random_state)
+    x_train = generate_random_data(n_samples, n_features, random_state=random_state)
 
     # Fit the Isolation Forest model
     clf = IsolationForest(random_state=random_state)
-    clf.fit(X_train)
+    clf.fit(x_train)
 
     # Predict anomaly scores for training data
-    scores_train = clf.decision_function(X_train)
+    scores_train = clf.decision_function(x_train)
 
     # Plot the training data with anomaly scores
-    plt.scatter(X_train[:, 0], X_train[:, 1], c=-scores_train, cmap='viridis')
+    plt.scatter(x_train[:, 0], x_train[:, 1], c=-scores_train, cmap='viridis')
     plt.colorbar(label='Anomaly Score')
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')

@@ -30,11 +30,11 @@ def generate_data(g):
     g.addV('Person').property('name', 'Quentin').property('age', -30).property('nb_client', 6).next()
     g.addV('Person').property('name', 'Rachel').property('age', 120).property('nb_client', 7).next()
     # generate ppl randomly but with a concentration on age 30 and nb_client 7
-    for i in tqdm(range(15)):
+    for i in tqdm(range(20)):
         g.addV('Person').property('name', 'Random1.' + str(i)).property('age', 30 + random.randint(-10, 10)).property(
             'nb_client', 7 + random.randint(-10, 10)).next()
 
-    for i in tqdm(range(15)):
+    for i in tqdm(range(20)):
         g.addV('Person').property('name', 'Random2.' + str(i)).property('age', 140 + random.randint(-10, 10)).property(
             'nb_client', 50 + random.randint(-10, 10)).next()
 
@@ -55,46 +55,56 @@ vertices = g.V().hasLabel('Person').valueMap(True).toList()
 X = [[v['nb_client'][0], v['age'][0]] for v in vertices]
 
 # Perform LOF analysis
-n_neighbors = min(10, len(vertices) - 1)  # Adjust the value based on your needs
+n_neighbors = min(15, len(vertices) - 1)  # Adjust the value based on your needs
 contamination = 0.12  # Adjust the value based on your needs
 lof = LocalOutlierFactor(n_neighbors=n_neighbors, contamination=contamination)
 y_pred = lof.fit_predict(X)
 lof_scores = -lof.negative_outlier_factor_
 
 # Perform Isolation Forest analysis
-n_estimators = 100  # Adjust the value based on your needs
+n_estimators = 115  # Adjust the value based on your needs
 isolation_forest = IsolationForest(n_estimators=n_estimators, contamination=contamination)
 isolation_forest.fit(X)
 if_scores = isolation_forest.decision_function(X)
 
-# Create the dataset with age, nb_client, and is_outlier
+# Create the dataset with age, nb_client, and is_outlier from data.csv
 dataset = []
-for i, v in enumerate(vertices):
-    age = v['age'][0]
-    nb_client = v['nb_client'][0]
-    is_outlier = 1 if (y_pred[i] == -1 and if_scores[i] < 0) else 0
-    dataset.append([age, nb_client, is_outlier])
+fileFound = True
+try:
+    with open('data.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            dataset.append([int(row[0]), int(row[1]), int(row[2])])
 
-# Fit a Random Forest classifier
-random_forest = RandomForestClassifier(n_estimators=100)
-X_train = [[x[0], x[1]] for x in dataset]
-y_train = [x[2] for x in dataset]
-random_forest.fit(X_train, y_train)
+    # Fit a Random Forest classifier
+    Classifier = RandomForestClassifier(n_estimators=100)
+    X_train = [[x[0], x[1]] for x in dataset]
+    y_train = [x[2] for x in dataset]
+    Classifier.fit(X_train, y_train)
 
-# Generate predictions for new data points
-new_data = [[32, 8], [28, 4], [40, 60], [30, 5], [31, 7], [30, 6], [120, -7], [140, 50]]
-predictions = random_forest.predict(new_data)
+    # Generate predictions for new data points
+    new_data = []
+    # random data
+    for i in range(520):
+        new_data.append([random.randint(-25, 80), random.randint(-25, 150)])
+    predictions = Classifier.predict(new_data)
 
-# Print the predictions
-for i, data_point in enumerate(new_data):
-    print(f"Data point {i + 1}: Age={data_point[0]}, nb_client={data_point[1]}, is_outlier={predictions[i]}")
+    # Print the predictions
+    for i, data_point in enumerate(new_data):
+        print(f"Data point {i + 1}: Age={data_point[0]}, nb_client={data_point[1]}, is_outlier={predictions[i]}")
+    print("-" * 100)
+except FileNotFoundError:
+    fileFound = False
+    print("File not found")
 
-# Save the csv file
-with open('data.csv', 'w', newline='') as csvfile:
+# Append IF data to existing data.csv
+with open('data.csv', 'a', newline='') as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(['age', 'nb_client', 'is_outlier'])
-    for data_point in dataset:
-        writer.writerow(data_point)
+    for i, v in enumerate(vertices):
+        age = v['age'][0]
+        nb_client = v['nb_client'][0]
+        is_outlier = 1 if (if_scores[i] < 0) else 0
+        writer.writerow([age, nb_client, is_outlier])
 
 # Calculate Local Outlier Probability (LOP)
 lof_probas = (lof_scores - lof_scores.min()) / (lof_scores.max() - lof_scores.min())
@@ -114,6 +124,17 @@ plt.scatter([x[0] for i, x in enumerate(X) if y_pred[i] == -1], [x[1] for i, x i
             color="r", s=30.0, label="LOF Outliers")
 plt.scatter([x[0] for i, x in enumerate(X) if if_scores[i] < 0], [x[1] for i, x in enumerate(X) if if_scores[i] < 0],
             color="b", s=30.0, label="IF Outliers")
+plt.scatter([x[0] for i, x in enumerate(X) if y_pred[i] == -1 and if_scores[i] < 0],
+            [x[1] for i, x in enumerate(X) if y_pred[i] == -1 and if_scores[i] < 0], color="m", s=30.0,
+            label="LOF & IF Outliers")
+if fileFound:
+    plt.scatter([x[0] for i, x in enumerate(new_data) if predictions[i] > 0.0],
+                [x[1] for i, x in enumerate(new_data) if predictions[i] > 0.0], color="g", s=30.0,
+                label="Random Forest Outliers")
+    plt.scatter([x[0] for i, x in enumerate(new_data) if predictions[i] == 0.0],
+                [x[1] for i, x in enumerate(new_data) if predictions[i] == 0.0], color="y", s=30.0,
+                label="Random Forest inlines")
+
 for i, v in enumerate(vertices):
     if y_pred[i] == -1 and if_scores[i] < 0:
         plt.annotate(v['name'][0], (X[i][0], X[i][1]), color="m")

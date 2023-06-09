@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from pyod.models.lof import LOF
+from pyod.models.inne import INNE
 
 from AnomalyDetection.utilsAD import generate_random_data
 
@@ -13,7 +13,7 @@ def main():
     x_train = generate_random_data(n_samples, n_features, random_state)
 
     # Fit the LOP model
-    clf = LOF()
+    clf = INNE()
     clf.fit(x_train)
 
     # Predict outlier scores
@@ -24,7 +24,7 @@ def main():
     plt.colorbar(label='Outlier Score')
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
-    plt.title('Local Outlier Probability (LOP)')
+    plt.title('Isolation Nearest Neighbors Ensemble (INNE)')
     plt.show()
 
 

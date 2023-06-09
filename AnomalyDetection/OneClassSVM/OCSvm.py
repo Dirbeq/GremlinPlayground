@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from pyod.models.lof import LOF
+from sklearn.svm import OneClassSVM
 
 from AnomalyDetection.utilsAD import generate_random_data
 
@@ -12,20 +12,20 @@ def main():
 
     x_train = generate_random_data(n_samples, n_features, random_state)
 
-    # Fit the LOP model
-    contamination = 0.1  # Percentage of outliers
-    clf = LOF(contamination=contamination)
+    # Fit the One-Class SVM model
+    nu = 0.1  # Contamination level
+    clf = OneClassSVM(nu=nu)
     clf.fit(x_train)
 
-    # Predict outlier scores
+    # Predict anomaly scores
     scores = clf.decision_function(x_train)
 
-    # Plot the data points with their outlier scores
+    # Plot the data points with their anomaly scores
     plt.scatter(x_train[:, 0], x_train[:, 1], c=-scores, cmap='viridis')
-    plt.colorbar(label='Outlier Score')
+    plt.colorbar(label='Anomaly Score')
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
-    plt.title('Local Outlier Probability (LOP)')
+    plt.title('One-Class SVM Anomaly Detection')
     plt.show()
 
 

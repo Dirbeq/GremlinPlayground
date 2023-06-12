@@ -24,7 +24,7 @@ def main():
     plt.colorbar(label='Outlier Score')
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
-    plt.title('Local Outlier Probability (LOP)')
+    plt.title('Local Outlier Factor (LOF)')
     plt.show()
 
 

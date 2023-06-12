@@ -1,6 +1,7 @@
+from LocalOutlierFactor.LOP import main as LOPmain
+
 from IsolationForest.IF import main as IFmain
 from LocalOutlierFactor.LOF import main as LOFmain
-from LocalOutlierProbability.LOP import main as LOPmain
 from OneClassSVM.OCSvm import main as OCSVMmain
 from Other.COPOD import main as COPODmain
 from Other.GMM import main as GMMmain

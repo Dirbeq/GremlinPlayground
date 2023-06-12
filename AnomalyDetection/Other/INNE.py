@@ -12,7 +12,7 @@ def main():
 
     x_train = generate_random_data(n_samples, n_features, random_state)
 
-    # Fit the LOP model
+    # Fit the INNE model
     clf = INNE()
     clf.fit(x_train)
 

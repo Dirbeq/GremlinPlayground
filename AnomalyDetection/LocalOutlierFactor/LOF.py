@@ -1,26 +1,30 @@
 import matplotlib.pyplot as plt
-from sklearn.neighbors import LocalOutlierFactor
+from pyod.models.lof import LOF
 
 from AnomalyDetection.utilsAD import generate_random_data
 
 
 def main():
-    # Generate random data with outliers
+    # Generate random data
     n_samples = 750
     n_features = 2
     random_state = 40
+
     x_train = generate_random_data(n_samples, n_features, random_state)
 
     # Fit the LOF model
-    clf = LocalOutlierFactor()
-    y_pred = clf.fit_predict(x_train)
+    clf = LOF()
+    clf.fit(x_train)
 
-    # Plot the training data with outlier labels
-    plt.scatter(x_train[:, 0], x_train[:, 1], c=y_pred, cmap='viridis')
-    plt.colorbar(label='Outlier Label')
+    # Predict outlier scores
+    scores = clf.decision_function(x_train)
+
+    # Plot the data points with their outlier scores
+    plt.scatter(x_train[:, 0], x_train[:, 1], c=-scores, cmap='viridis')
+    plt.colorbar(label='Outlier Score')
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
-    plt.title('Local Outlier Factor')
+    plt.title('Local Outlier Probability (LOP)')
     plt.show()
 
 

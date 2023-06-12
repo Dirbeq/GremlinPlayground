@@ -1,5 +1,3 @@
-from LocalOutlierFactor.LOP import main as LOPmain
-
 from IsolationForest.IF import main as IFmain
 from LocalOutlierFactor.LOF import main as LOFmain
 from OneClassSVM.OCSvm import main as OCSVMmain
@@ -11,7 +9,6 @@ from Other.INNE import main as INNEmain
 def main():
     IFmain()
     LOFmain()
-    LOPmain()
     OCSVMmain()
     INNEmain()
     GMMmain()

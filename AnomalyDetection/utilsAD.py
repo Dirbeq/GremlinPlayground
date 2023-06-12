@@ -6,11 +6,11 @@ def generate_random_data(n_samples, n_features, random_state=None):
     if random_state is not None:
         np.random.seed(random_state)
 
-    global_random_state = 12  # Change this to a specific value for all algorithms, or None for random
+    global_random_state = 42  # Change this to a specific value for all algorithms, or None for random
     if global_random_state is not None:
         np.random.seed(global_random_state)
 
-    centers = [[-4, -4], [4, 4], [8, 8]]
+    centers = [[0, -4], [4, 6], [8, 7]]
     x_train, _ = make_blobs(n_samples=n_samples, centers=centers, random_state=random_state)
 
     # Generate outliers

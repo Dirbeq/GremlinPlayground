@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from pyod.models.inne import INNE
 
-from AnomalyDetection.utilsAD import generate_random_data
+from AnomalyDetection.utilsAD import generate_random_data, export_to_json
 
 
 def main():
@@ -26,6 +26,9 @@ def main():
     plt.ylabel('Feature 2')
     plt.title('Isolation Nearest Neighbors Ensemble (INNE)')
     plt.show()
+
+    # Export the model to JSON
+    export_to_json(x_train, scores, 'INNE.json')
 
 
 if __name__ == '__main__':

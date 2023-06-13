@@ -37,7 +37,7 @@ def main():
 
     # Export data to JSON
     with open('AnomalyScore.json', 'w') as outfile:
-        json.dump(data, outfile, indent=4)
+        json.dump(data, outfile, indent=2)
 
 
 if __name__ == '__main__':

@@ -30,6 +30,7 @@ def main():
     # Export the model to JSON
     export_to_json(x_train, scores, 'INNE')
 
+    return scores
 
 
 if __name__ == '__main__':

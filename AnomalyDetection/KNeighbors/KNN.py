@@ -38,6 +38,8 @@ def main():
     plt.title(f'KNN Classification (k={k})')
     plt.show()
 
+    return y_pred
+
 
 if __name__ == '__main__':
     main()

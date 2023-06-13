@@ -28,6 +28,8 @@ def main():
     plt.title('One-Class SVM Anomaly Detection')
     plt.show()
 
+    return scores
+
 
 if __name__ == '__main__':
     main()

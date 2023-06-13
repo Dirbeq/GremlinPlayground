@@ -27,6 +27,8 @@ def main():
     plt.title('Local Outlier Factor (LOF)')
     plt.show()
 
+    return scores
+
 
 if __name__ == '__main__':
     main()

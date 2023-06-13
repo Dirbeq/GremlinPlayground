@@ -27,6 +27,8 @@ def main():
     plt.title('Gaussian Mixture Model (GMM)')
     plt.show()
 
+    return scores
+
 
 if __name__ == '__main__':
     main()

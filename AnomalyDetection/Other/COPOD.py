@@ -27,6 +27,8 @@ def main():
     plt.title('Copula-Based Outlier Detection (COPOD)')
     plt.show()
 
+    return scores
+
 
 if __name__ == '__main__':
     main()

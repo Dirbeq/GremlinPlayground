@@ -24,9 +24,24 @@ def generate_random_data(n_samples, n_features, random_state=None):
 
 
 def export_to_json(x_train, scores, filename):
-    scores = np.array([scores]).transpose().tolist()
-    data = np.concatenate((x_train, scores), axis=1)
+    labels = ['x', 'y', 'score']
+    data = []
 
-    data = data.tolist()
-    with open(filename, 'w') as outfile:
-        json.dump(data, outfile)
+    for i in range(len(x_train)):
+        point = {label: value for label, value in zip(labels, x_train[i])}
+        point['score'] = scores[i]
+        data.append(point)
+
+    with open(filename + '.json', 'w') as outfile:
+        json.dump(data, outfile, indent=4)
+
+
+def plot_data(x_train, scores, title):
+    import matplotlib.pyplot as plt
+
+    plt.scatter(x_train[:, 0], x_train[:, 1], c=-scores, cmap='viridis')
+    plt.colorbar(label='Anomaly Score')
+    plt.xlabel('Feature 1')
+    plt.ylabel('Feature 2')
+    plt.title(title)
+    plt.show()

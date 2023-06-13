@@ -1,17 +1,9 @@
-import matplotlib.pyplot as plt
 from pyod.models.lof import LOF
 
-from AnomalyDetection.utilsAD import generate_random_data
+from AnomalyDetection.utilsAD import generate_random_data, plot_data
 
 
-def main():
-    # Generate random data
-    n_samples = 750
-    n_features = 2
-    random_state = 40
-
-    x_train = generate_random_data(n_samples, n_features, random_state)
-
+def main(x_train, plot=False):
     # Fit the LOF model
     clf = LOF()
     clf.fit(x_train)
@@ -19,16 +11,12 @@ def main():
     # Predict outlier scores
     scores = clf.decision_function(x_train)
 
-    # Plot the data points with their outlier scores
-    plt.scatter(x_train[:, 0], x_train[:, 1], c=-scores, cmap='viridis')
-    plt.colorbar(label='Outlier Score')
-    plt.xlabel('Feature 1')
-    plt.ylabel('Feature 2')
-    plt.title('Local Outlier Factor (LOF)')
-    plt.show()
+    if plot:
+        # Plot the data points with their outlier scores
+        plot_data(x_train, scores, 'Local Outlier Factor (LOF)')
 
     return scores
 
 
 if __name__ == '__main__':
-    main()
+    main(generate_random_data(750, 2, 40), plot=True)

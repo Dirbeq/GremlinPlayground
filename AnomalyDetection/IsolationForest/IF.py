@@ -13,9 +13,9 @@ def main(x_train, plot=False):
 
     if plot:
         # Plot the data points with their anomaly scores
-        plot_data(x_train, scores_train, 'Isolation Forest (IF)')
+        plot_data(x_train, -scores_train, 'Isolation Forest (IF)')
 
-    return scores_train
+    return -scores_train
 
 
 if __name__ == '__main__':

@@ -14,9 +14,9 @@ def main(x_train, plot=False):
 
     if plot:
         # Plot the data points with their anomaly scores
-        plot_data(x_train, scores, 'One-Class SVM (OCSVM)')
+        plot_data(x_train, -scores, 'One-Class SVM (OCSVM)')
 
-    return scores
+    return -scores
 
 
 if __name__ == '__main__':

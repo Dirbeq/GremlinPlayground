@@ -11,9 +11,9 @@ from AnomalyDetection.utilsAD import generate_random_data
 
 def main():
     # Generate random data
-    x_train = generate_random_data(750, 2, 40)
+    x_train = generate_random_data(750, 2, 56)
 
-    plot = False
+    plot = True
 
     # Calculate scores for different algorithms
     scores = {

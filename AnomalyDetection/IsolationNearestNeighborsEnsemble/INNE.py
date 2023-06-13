@@ -28,7 +28,8 @@ def main():
     plt.show()
 
     # Export the model to JSON
-    export_to_json(x_train, scores, 'INNE.json')
+    export_to_json(x_train, scores, 'INNE')
+
 
 
 if __name__ == '__main__':

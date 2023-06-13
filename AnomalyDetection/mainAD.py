@@ -1,19 +1,19 @@
 import json
 
-from AnomalyDetection.IsolationForest.IF import main as IFmain
-from AnomalyDetection.IsolationNearestNeighborsEnsemble.INNE import main as INNEmain
-from AnomalyDetection.LocalOutlierFactor.LOF import main as LOFmain
-from AnomalyDetection.OneClassSVM.OCSvm import main as OCSVMmain
-from AnomalyDetection.Other.COPOD import main as COPODmain
-from AnomalyDetection.Other.GMM import main as GMMmain
-from AnomalyDetection.utilsAD import generate_random_data
+from IsolationForest.IF import main as IFmain
+from IsolationNearestNeighborsEnsemble.INNE import main as INNEmain
+from LocalOutlierFactor.LOF import main as LOFmain
+from OneClassSVM.OCSvm import main as OCSVMmain
+from Other.COPOD import main as COPODmain
+from Other.GMM import main as GMMmain
+from utilsAD import generate_random_data
 
 
 def main():
     # Generate random data
     x_train = generate_random_data(750, 2, 56)
 
-    plot = True
+    plot = False
 
     # Calculate scores for different algorithms
     scores = {

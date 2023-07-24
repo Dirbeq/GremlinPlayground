@@ -1,0 +1,15 @@
+from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+from PIL import Image
+
+processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+model = VisionEncoderDecoderModel.from_pretrained("../Fine-Tunning/output_dir")
+
+# load image from the IAM dataset
+image = Image.open("../data/test/image/L1.jpg").convert("RGB")
+
+pixel_values = processor(image, return_tensors="pt").pixel_values
+generated_ids = model.generate(pixel_values)
+
+generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+print("Recognized text:", generated_text)

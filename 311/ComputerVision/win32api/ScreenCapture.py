@@ -2,6 +2,7 @@ import win32gui
 import win32ui
 import win32con
 
+
 class ScreenCapture:
     x = 0  # target x
     y = 0  # target y
@@ -51,7 +52,6 @@ class ScreenCapture:
         return bmpstr, bmpinfo
 
 
-
 def do_window_exist(window_name):
     try:
         win32gui.FindWindow(None, window_name)
@@ -60,5 +60,4 @@ def do_window_exist(window_name):
     else:
         print("Window with name '" + window_name + "' exists")
         return True
-
 
